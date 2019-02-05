@@ -33,12 +33,14 @@ public class Pong extends JPanel implements ActionListener, KeyListener{
 		Timer timer = new Timer(10, this);
 		timer.start();
 	}
+
 	public Bracket getPlayer(int player){
 		if(player == 1)
 			return player1;
 		else
 			return player2;
 	}
+
 	public void scored(int player){
 		player1.setPosY(fHeight/2 - 75);
 		player2.setPosY(fHeight/2 - 75);
@@ -47,6 +49,7 @@ public class Pong extends JPanel implements ActionListener, KeyListener{
 		else
 			score2 += 1;
 	}
+
 	public void update(){
 		ball.updatePos();
 		player1.update();
@@ -78,13 +81,11 @@ public class Pong extends JPanel implements ActionListener, KeyListener{
 	public void actionPerformed(ActionEvent arg0) {
 		update();
 		repaint();
-		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		keys.put(e.getKeyCode(), true);
-		
 	}
 
 	@Override

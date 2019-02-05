@@ -36,6 +36,7 @@ public class Ball {
 	public boolean yOutOfBounds(){
 		return posY >= fHeight - 50 || posY < 0; 
 	}
+
 	public void reset(int player){
 		try {
 			Thread.sleep(100);
@@ -49,9 +50,11 @@ public class Ball {
 		vY = 2;
 		panel.scored(player);
 	}
+
 	 public Rectangle getBounds() {
 	        return new Rectangle(posX, posY, WIDTH, HEIGHT);
-	    }
+		}
+		
 	public void updatePos(){
 		if(posX >= fWidth)
 			reset(1);
@@ -62,7 +65,6 @@ public class Ball {
 		posX += vX;
 		posY += vY;
 		isColliding();
-		
 	}
 	
 }
