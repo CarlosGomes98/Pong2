@@ -25,12 +25,12 @@ public class Pong extends JPanel implements ActionListener, KeyListener{
 		this.game = game;
 		player1 = new Bracket(this, 50, fHeight/2 - 75, 1, KeyEvent.VK_W, KeyEvent.VK_S);
 		player2 = new Bracket(this, 950, fHeight/2 - 75, 2, KeyEvent.VK_UP, KeyEvent.VK_DOWN);
-		ball = new Ball(this, 2, 2, fWidth/2, fHeight/2, fWidth, fHeight);
+		ball = new Ball(this, 2, 2, fWidth/2, fHeight/2, fWidth, fHeight, player2);
 		setBounds(0, 0, fWidth, fHeight);
 		setVisible(true);
 		setFocusable(true);
 		addKeyListener(this);
-		Timer timer = new Timer(10, this);
+		Timer timer = new Timer(5, this);
 		timer.start();
 	}
 
@@ -39,6 +39,11 @@ public class Pong extends JPanel implements ActionListener, KeyListener{
 			return player1;
 		else
 			return player2;
+	}
+
+	public Bracket otherPlayer(Bracket player){
+		if (player.getPlayerId() == 1) return player2;
+		return player1;
 	}
 
 	public void scored(int player){
@@ -70,8 +75,12 @@ public class Pong extends JPanel implements ActionListener, KeyListener{
 		g.setColor(Color.WHITE);
 		g.fillOval(ball.getPosX(), ball.getPosY(), 25, 25);
 		//draw the brackets
-		g.fillRect(player1.getPosX(), player1.getPosY(), player1.getWidth(), player1.getHeight());
-		g.fillRect(player2.getPosX(), player2.getPosY(), player2.getWidth(), player2.getHeight());
+		g.setColor(Color.RED);
+		Bracket player = ball.getNextPlayer();
+		g.fillRect(player.getPosX(), player.getPosY(), player.getWidth(), player.getHeight());
+		player = otherPlayer(player);
+		g.setColor(Color.WHITE);
+		g.fillRect(player.getPosX(), player.getPosY(), player.getWidth(), player.getHeight());
 		//draw score
 		g.drawString(Integer.toString(score1), 200, 100);
 		g.drawString(Integer.toString(score2), 800, 100);

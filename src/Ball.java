@@ -2,10 +2,12 @@ import java.awt.Rectangle;
 
 public class Ball {
 	private int vX, vY, posX, posY, fWidth, fHeight;
+	private Bracket nextPlayer;
+	private Bracket firstPlayer;
 	private static final int WIDTH = 25, HEIGHT = 25;
 	private Pong panel;
 	
-	public Ball(Pong panel, int vX, int vY, int posX, int posY, int fWidth, int fHeight){
+	public Ball(Pong panel, int vX, int vY, int posX, int posY, int fWidth, int fHeight, Bracket firstPlayer){
 		this.vX = vX;
 		this.vY = vY;
 		this.posX = posX;
@@ -13,8 +15,14 @@ public class Ball {
 		this.fWidth = fWidth;
 		this.fHeight = fHeight;
 		this.panel = panel;
-		
+		this.firstPlayer = firstPlayer;
+		this.nextPlayer = firstPlayer;
 	}
+
+	public Bracket getNextPlayer() {
+		return nextPlayer;
+	}
+	
 	public int getPosX(){
 		return posX;
 	}
@@ -24,12 +32,21 @@ public class Ball {
 	}
 	
 	public void isColliding(){
-		if (panel.getPlayer(1).getBounds().intersects(getBounds()) || panel.getPlayer(2).getBounds().intersects(getBounds())){
-			if(vX > 0)
-				vX += 1;
-			else
-				vX -= 1;
-			vX = -vX;
+		if (nextPlayer.getBounds().intersects(getBounds())){
+			if ( (vX > 0 && posX >= nextPlayer.getPosX() - nextPlayer.getWidth()/2.0)
+				|| (vX < 0 && posX <= nextPlayer.getPosX() + nextPlayer.getWidth() / 2.0) ) {
+					vY = -vY;
+			} 
+			else {
+				if (vX > 0) {
+					vX += 1;
+				}
+				else {
+					vX -= 1;
+				}	
+				vX = -vX;
+			}
+			nextPlayer = panel.otherPlayer(nextPlayer);
 		}
 			
 	}
@@ -49,6 +66,7 @@ public class Ball {
 		vX = 2;
 		vY = 2;
 		panel.scored(player);
+		nextPlayer = firstPlayer;
 	}
 
 	 public Rectangle getBounds() {
@@ -56,15 +74,15 @@ public class Ball {
 		}
 		
 	public void updatePos(){
+		posX += vX;
+		posY += vY;
+		isColliding();
 		if(posX >= fWidth)
 			reset(1);
 		else if(posX <= 0)
 			reset(2);
 		if(yOutOfBounds())
 			vY = -vY;
-		posX += vX;
-		posY += vY;
-		isColliding();
 	}
 	
 }

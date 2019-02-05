@@ -20,6 +20,11 @@ public class Bracket {
 		yA = 0;
 		keys = panel.keys;
 	}
+
+	public int getPlayerId() {
+		return player;
+	}
+	
 	public int getPosX(){
 		return posX;
 	}
